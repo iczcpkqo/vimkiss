@@ -45,7 +45,9 @@ autocmd VimEnter * silent! let &t_EI = "\e[1 q"              " 启动 Vim 并进
 """"""""""""""""""""
 
 " 显示行号
-set nu
+" set nu
+" 显示相对行号
+set rnu
 
 " 行宽提示线
 set colorcolumn=81
