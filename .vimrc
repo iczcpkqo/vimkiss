@@ -18,6 +18,10 @@ set noswapfile     " 禁用崩溃时保存文件
 " 启用文件类型检测、插件和缩进。
 filetype plugin indent on     " 自动检测文件类型。| 加载与文件类型相关的插件。 | 加载与文件类型相关的缩进规则。
 
+" 超时时间
+" terminal timeout length
+" set ttimeoutlen=0
+
 """"""""""""""""""""""""""""""""""""""""
 "               交互效果                
 """"""""""""""""""""""""""""""""""""""""
@@ -38,7 +42,13 @@ set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50   " 下划线
 let &t_EI = "\e[1 q"                                         " 普通模式 为方块
 let &t_SI = "\e[5 q"                                         " 插入模式 为竖线
 let &t_SR = "\e[3 q"                                         " 替换模式 为下划线
-autocmd VimEnter * silent! let &t_EI = "\e[1 q"              " 启动 Vim 并进入插入模式时，光标将变为竖线光标
+
+augroup cursor_settings
+    autocmd!
+
+    " 启动 Vim 并进入插入模式时，光标将变为竖线光标
+    autocmd VimEnter * silent! let &t_EI = "\e[1 q"
+augroup END
 
 """"""""""""""""""""
 "      行设置      "
@@ -46,8 +56,10 @@ autocmd VimEnter * silent! let &t_EI = "\e[1 q"              " 启动 Vim 并进
 
 " 显示行号
 " set nu
-" 显示相对行号
 set rnu
+
+" 显示当前行的绝对行号
+set number
 
 " 行宽提示线
 set colorcolumn=81
@@ -94,6 +106,25 @@ set showmatch
 set foldenable     " 插入模式, 输入(, { ,匹配 ) }
 set fdm=syntax     " 语法折叠, 根据语法规则自动折叠代码块
 
+""""""
+" 开启语法高亮
+syntax enable
+
+" 允许用指定语法高亮配色方案替换默认方案
+if &t_Co > 2 || has("gui_running")
+    syntax on
+endif
+
+" 设置颜色主题
+colorscheme desert
+
+" 如果终端支持真彩色
+if has('termguicolors')
+    set termguicolors
+endif
+
+""""""
+
 " 折叠方法, 手动
 set foldmethod=manual
 
@@ -103,11 +134,6 @@ set foldlevelstart=99     " 打开文件时, 展开折叠的内容
 " 始终显示状态栏
 set laststatus=2
 
-" 离开插入模式时禁用光标行高亮
-autocmd InsertLeave * se nocul
-
-" 进入插入模式时启用光标行高亮
-autocmd InsertEnter * se cul
 
 " 设置垂直分隔线的填充字符
 set fillchars=vert:/
@@ -117,6 +143,17 @@ set fillchars=stl:/
 
 " 设置非当前窗口状态栏的填充字符
 set fillchars=stlnc:/
+
+augroup text_style_settings
+    autocmd!
+
+    " 离开插入模式时禁用光标行高亮
+    autocmd InsertLeave * se nocul
+
+    " 进入插入模式时启用光标行高亮
+    autocmd InsertEnter * se cul
+augroup END
+
 
 """"""""""""""""""""
 "     底部设置     "
@@ -212,6 +249,22 @@ let g:netrw_browse_split = 4        " 左侧打开文件浏览窗口
 let g:netrw_altv = 1                " 右侧打开文件
 let g:netrw_winsize = 35            " 设置文件浏览器窗口宽度为 35
 set autochdir                       " 打开文件时将当前目录更改为当前缓冲区的目录。
+
+augroup netrw_mapping_settings
+    autocmd!
+
+    " o - 打开文件/目录但保持netrw打开
+    autocmd FileType netrw nmap <buffer> o <CR>
+
+    " u - 进入上级目录
+    autocmd FileType netrw nmap <buffer> u -
+
+    " go - 光标处文件/目录预览,但保持焦点在netrw
+    autocmd FileType netrw nmap <buffer> go <CR><C-w>p
+
+    " gi - 水平分割打开
+    autocmd FileType netrw nmap <buffer> gi :split<CR><CR>
+augroup END
 
 " 使用<F3>开关资源管理器
 function! ToggleVExplorer()

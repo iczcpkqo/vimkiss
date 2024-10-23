@@ -1,3 +1,5 @@
-**大道至简**
+# VIM KISS
 
-**keep eazy**
+**K**eep **I**t **S**imple, **S**tupid
+
+**大道至简**
