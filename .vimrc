@@ -97,7 +97,29 @@ highlight TabLineSel ctermfg=White ctermbg=DarkGrey     " 被选中的标签颜�
 """"""""""""""""""""
 
 " 设置背景色, 黑色
-set background=dark
+" set background=dark
+
+" 移除背景色
+function! AdaptColorscheme()
+    highlight Normal ctermbg=NONE guibg=NONE
+    highlight Normal ctermbg=NONE guibg=NONE
+    highlight LineNr ctermbg=NONE guibg=NONE
+    highlight Folded ctermbg=NONE guibg=NONE
+    highlight NonText ctermbg=NONE guibg=NONE
+    highlight SpecialKey ctermbg=NONE guibg=NONE
+    highlight VertSplit ctermbg=NONE guibg=NONE
+    highlight SignColumn ctermbg=NONE guibg=NONE
+    highlight StatusLine ctermbg=NONE guibg=NONE
+    highlight StatusLineNC ctermbg=NONE guibg=NONE
+    highlight Pmenu ctermbg=NONE guibg=NONE
+    highlight CursorLineNr ctermbg=NONE guibg=NONE
+endfunction
+autocmd ColorScheme * call AdaptColorscheme()
+
+" 启用真彩色支持
+if has("termguicolors")
+    set termguicolors
+endif
 
 " 括号匹配显示
 set showmatch
