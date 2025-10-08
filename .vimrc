@@ -303,7 +303,7 @@ function! ToggleVExplorer()
       unlet t:expl_buf_num
   else
       exec '1wincmd w'
-      Vexplore
+      Lexplore
       let t:expl_buf_num = bufnr("%")
       vertical resize 35
   endif
